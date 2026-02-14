@@ -118,6 +118,7 @@ st.write("MCC:", matthews_corrcoef(y_test, y_pred))
 # Confusion Matrix
 # ----------------------------
 st.subheader("Confusion Matrix")
+
 cm = confusion_matrix(y_test, y_pred)
 
 fig, ax = plt.subplots()
@@ -131,36 +132,3 @@ st.pyplot(fig)
 # ----------------------------
 st.subheader("Classification Report")
 st.text(classification_report(y_test, y_pred))
-
-# ----------------------------
-# Download Sample Test CSV
-# ----------------------------
-st.subheader("Download Sample Test CSV")
-
-sample_df = pd.DataFrame(X_test, columns=X.columns).head(20)
-csv = sample_df.to_csv(index=False)
-
-st.download_button(
-    label="Download Sample Test CSV",
-    data=csv,
-    file_name="sample_test_data.csv",
-    mime="text/csv"
-)
-
-# ----------------------------
-# Upload CSV for Prediction
-# ----------------------------
-st.subheader("Upload a CSV file for Prediction")
-
-uploaded_file = st.file_uploader("Upload CSV", type=["csv"])
-
-if uploaded_file is not None:
-    input_data = pd.read_csv(uploaded_file)
-
-    # Scale input
-    input_scaled = scaler.transform(input_data)
-
-    predictions = model.predict(input_scaled)
-
-    st.write("Predictions:")
-    st.write(predictions)
